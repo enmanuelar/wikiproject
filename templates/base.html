@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="static/css/base.css">
+    {% block link %}
+    {% endblock %}
+</head>
+<body>
+    <div class="jumbotron">
+        <a href="/"><h1>EAR Wiki</h1></a>
+        <p>Welcome to the most complete wiki on the web</p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-md-offset-12">
+                <div class="btn-group" role="group">
+                    <!--edit si esta en pag principal y usuario esta conectado con su cuenta-->
+                    <button type="button" class="btn btn-default edit-btn">Edit</button>
+                    <!--signup-->
+                    <button type="submit" class="btn btn-default signup-btn">Signup</button>
+                    <!--login-->
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Login
+                            <span class="caret"></span></button>
+                        <form class="form-signin dropdown-menu dropdown-menu-right" id="login-form" action="/login" method="post">
+                            <label for="inputName" class="sr-only">Username</label>
+                            <input type="text" id="inputName" class="form-control" name="username" placeholder="Username" required autofocus>
+                            <label for="inputPassword" class="sr-only">Password</label>
+                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                            <li role="separator" class="divider"></li>
+                            <!--poner el mensaje de error de login en este p-->
+                            <p></p>
+                            <input type="submit" class="btn btn-default" value="Submit">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
+    <script>
+        $(".signup-btn").click(function(){
+            window.location.replace("/signup");
+        });
+        $(".edit-btn").click(function(){
+            window.location.replace("/_edit");
+        });
+        if (window.location.pathname === "/_edit"){
+            console.log("tamo aqui");
+            $(".edit-btn").prop("disabled", true);
+        }else{
+            $(".edit-btn").prop("disabled", false);
+        }
+    </script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
