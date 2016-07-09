@@ -1,0 +1,73 @@
+.jumbotron{
+    text-align: right;
+    }
+
+#login-form{
+    width: 191px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.edit-text{
+    background-color: #e4eef9;
+    min-height: 350px;
+    padding: 5px;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading{
+  margin-bottom: 10px;
+}
+.form-signin{
+  font-weight: normal;
+}
+
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+#top-navbar{
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.save-btn-container{
+    padding-left: 0px;
+}
+
+.save-btn{
+    text-align: left;
+    margin-top: 10px;
+    visibility: hidden;
+}
+
+.title-input{
+    margin-bottom: 10px;
+}
+
+.list-container{
+    background-color: #fff8dc;
+}

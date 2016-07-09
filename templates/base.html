@@ -9,7 +9,7 @@
         {% endblock %}
     </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
-    <link rel="stylesheet" href="static/css/base.css">
+    <link rel="stylesheet" href="static/css/main.css">
     {% block link %}
     {% endblock %}
 </head>
@@ -20,7 +20,7 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-md-3 col-md-offset-12">
+            <div class="col-md-4 col-md-offset-8" id="top-navbar">
                 <div class="btn-group" role="group">
                     <!--edit si esta en pag principal y usuario esta conectado con su cuenta-->
                     <button type="button" class="btn btn-default edit-btn">Edit</button>
@@ -53,19 +53,10 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
     <script>
-        $(".signup-btn").click(function(){
-            window.location.replace("/signup");
-        });
-        $(".edit-btn").click(function(){
-            window.location.replace("/_edit");
-        });
-        if (window.location.pathname === "/_edit"){
-            console.log("tamo aqui");
-            $(".edit-btn").prop("disabled", true);
-        }else{
-            $(".edit-btn").prop("disabled", false);
-        }
+
+
     </script>
+    <script src="static/js/wiki.js"></script>
     {% block scripts %}
     {% endblock %}
 </body>

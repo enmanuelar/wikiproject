@@ -4,17 +4,15 @@
     Edit page
 {% endblock %}
 
-{% block link %}
-<link rel="stylesheet" href="static/css/edit.css">
-{% endblock %}
 
 {% block content %}
 <form action="/_edit" role="form" method="post">
     <div class="form-group">
-        <label for="edit-text">Edit</label>
-        <!--<textarea name="content" class="form-control" id="edit-text" rows="5">print articulo si existe en db o crea uno si no existe</textarea>-->
-        <div contenteditable id="edit-text"></div>
+        <label for="edit-text">Create html document for <em>{{ title }}</em></label>
+        <input type="text" class="form-control title-input" name="title" value={{ title }} readonly>
+        <textarea name="content" class="form-control edit-text" id="edit-text" placeholder="Write your html here" required></textarea>
+        <!--<div contenteditable class="edit-text" id="edit-text"></div>-->
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <input type="submit" class="btn btn-default" value="save">
 </form>
 {% endblock %}

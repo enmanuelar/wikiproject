@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12" id="index-content" contenteditable="false">
+        {{ content }}
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-4 save-btn-container">
+        <button type="button" class="btn btn-default save-btn">Save</button>
+    </div>
+</div>
+{% endblock %}

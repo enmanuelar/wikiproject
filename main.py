@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import webapp2, os, jinja2
+import webapp2, os, jinja2, wikidb, logging
 from google.appengine.ext import db
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
+jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=False)
 
 
 class Handler(webapp2.RequestHandler):
@@ -35,19 +35,24 @@ class Handler(webapp2.RequestHandler):
 
 class MainPage(Handler):
     def get(self):
-        #self.response.out.write("hi")
-        self.render("index.html")
+        entries = db.GqlQuery("SELECT * FROM Entry ORDER BY created DESC LIMIT 10")
+        self.render("index.html", entries = entries)
 
 class SignupHandler(Handler):
     def get(self):
         self.render("signup.html")
 
 class EditHandler(Handler):
-    def get(self):
-        self.render("_edit.html")
+    def get(self, *args):
+        title = args[0][1:]
+        self.render("_edit.html", title = title)
 
-    def post(self):
-        self.redirect("/")
+    def post(self, *args):
+        title = self.request.get("title")
+        content = self.request.get("content")
+        entry = wikidb.Entry(title = title, content = content)
+        entry.put()
+        self.redirect("/" + title)
 
 class LoginHandler(Handler):
     def get(self):
@@ -56,9 +61,20 @@ class LoginHandler(Handler):
     def post(self):
         self.redirect("/")
 
+class WikiPageHandler(Handler):
+    def get(self, *args):
+        entity = db.Query(wikidb.Entry).filter('title =', args[0][1:]).get()
+        try:
+            if entity.title:
+                self.render("/page.html",title = entity.title, content = entity.content)
+        except AttributeError:
+            self.redirect("/_edit" + args[0])
+
+PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)?'
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/signup', SignupHandler),
-    ('/_edit', EditHandler),
-    ('/login', LoginHandler)
+    ('/_edit' + PAGE_RE, EditHandler),
+    ('/login', LoginHandler),
+    (PAGE_RE, WikiPageHandler)
 ], debug=True)

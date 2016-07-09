@@ -3,57 +3,26 @@
 {% block title %}
     EAR Wiki
 {% endblock %}
-{% block link %}
-<link rel="stylesheet" href="static/css/main.css">
-{% endblock %}
+
 
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <pre>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae velit vitae velit consectetur molestie.
-            Cras turpis dui, egestas ut maximus vulputate, auctor quis ante. Duis non sapien metus. Mauris ut diam
-            scelerisque, vehicula dui vel, aliquet lacus. Vivamus at elementum dui, sed scelerisque nibh. In mollis,
-            massa vel dignissim aliquet, nulla quam sollicitudin est, vel tincidunt augue ipsum quis odio. Cras
-            elementum ex non lacinia dapibus. Phasellus tempor ut arcu non convallis. Phasellus tristique ipsum vitae
-            massa mattis, sit amet sagittis lectus imperdiet. Nulla id dictum ante. Sed id dui dolor. In aliquet
-            volutpat nulla, eget semper leo. Suspendisse potenti. Vestibulum quis ante id velit scelerisque gravida vel
-            sed tellus.
+        <h2>Check the latest pages!</h2>
+        <div class="list-group-item list-container">
+            {% for entry in entries %}
+            <a href="/{{entry.title}}" class="list-group-item">{{entry.title}}</a>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
 
-            Vestibulum vehicula nibh vitae egestas molestie. Vestibulum aliquam ullamcorper luctus. Suspendisse ornare,
-            nunc nec vestibulum molestie, ligula velit laoreet ligula, eget efficitur sem ipsum eget risus. Sed placerat
-            eros et eros viverra, id commodo urna tincidunt. Vestibulum augue est, aliquet ac nunc quis, lobortis luctus
-            lorem. Vestibulum in ex bibendum, accumsan libero nec, ultricies nulla. Suspendisse sagittis malesuada lacus
-            id dignissim. Curabitur vel felis pellentesque, ultricies est vel, suscipit magna. Donec semper condimentum
-            eros et blandit. Suspendisse non est nec risus maximus congue. Vivamus rhoncus tristique massa, sollicitudin
-            suscipit leo scelerisque nec. Mauris posuere scelerisque aliquet. Nunc dictum, massa ut aliquam tincidunt,
-            odio magna tempus est, nec bibendum augue risus at lacus. Proin vel ex sem. Mauris lectus est, ultrices ut
-            facilisis sed, semper quis diam. Nulla facilisi.
-
-            Phasellus rhoncus ex nec ex aliquam, quis aliquet libero euismod. Nunc laoreet congue risus, nec porta nisi
-            fringilla tincidunt. Integer urna magna, auctor sed ultrices sed, interdum sit amet urna. Suspendisse
-            sollicitudin tellus ut turpis hendrerit laoreet. In maximus egestas mi eu tincidunt. Quisque placerat
-            pellentesque turpis, ut lacinia quam vehicula et. Pellentesque dapibus auctor mattis.
-
-            Praesent lobortis, neque vel placerat tempus, eros urna mollis sem, sed sollicitudin dui diam vel ligula.
-            Morbi in diam a justo accumsan finibus et ut sapien. Suspendisse interdum justo metus, ut fringilla erat
-            sollicitudin sit amet. Nulla lacinia augue ex, sit amet pulvinar augue rutrum non. Curabitur suscipit purus
-            vel massa pharetra, eget luctus sem vestibulum. Etiam rhoncus ultricies volutpat. Pellentesque habitant
-            morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas molestie cursus turpis non
-            pulvinar. Mauris pulvinar leo ut ultrices volutpat. Nulla varius tristique ligula in sollicitudin.
-
-            Donec tellus tortor, fermentum at fringilla non, sodales a purus. Aliquam faucibus mollis euismod.
-            Vestibulum non sapien sit amet augue bibendum auctor. Donec volutpat venenatis libero, ut accumsan ligula
-            tincidunt vel. Sed eu pellentesque magna. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-            Morbi dapibus sodales turpis sit amet fringilla. Proin sodales mauris non dui tempus fringilla ut at velit.
-            Curabitur pulvinar, velit at gravida vehicula, ligula tellus porttitor neque, vitae eleifend sem mauris quis
-            magna. Maecenas at elementum turpis. Duis id erat ut mi consectetur euismod at sed ligula. Sed eros nibh,
-            malesuada in enim id, tristique dictum tellus. Vestibulum ante ipsum primis in faucibus orci luctus et
-            ultrices posuere cubilia Curae;
-        </pre>
+</div>
+<div class="row">
+    <div class="col-md-4 save-btn-container">
+        <button type="button" class="btn btn-default save-btn">Save</button>
     </div>
 </div>
-
 
 
 {% endblock %}
