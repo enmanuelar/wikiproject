@@ -4,13 +4,8 @@
 $(".signup-btn").click(function(){
     window.location.replace("/signup");
 });
-//$(".edit-btn").click(function(){
-//    window.location.replace("/_edit");
-//});
 
-//(window.location.pathname.substring(0, 6) !== "/signup")
 var paths = ["/signup", "/"];
-//if (window.location.pathname in ("/signup", "/") || window.location.pathname.substring(0, 6) === "/_edit"){
 if (paths.indexOf(window.location.pathname)!= -1 || window.location.pathname.substring(0, 6) === "/_edit"){
     $(".edit-btn").prop("disabled", true);
 }
@@ -24,8 +19,17 @@ $(".edit-btn").click(function(){
     contentDiv.prop("contenteditable","true");
     $(".edit-btn").prop("disabled", true);
     $(".save-btn").css("visibility", "visible");
-    //localStorage.setItem("content", content);
 });
+
+function ajaxContent(content){
+    $.ajax(window.location.pathname,{
+        type: 'POST',
+        dataType: 'json',
+        data:{
+            content: content
+        }
+    });
+}
 
 $(".save-btn").click(function(){
     var content = $("#index-content").text();
@@ -33,8 +37,11 @@ $(".save-btn").click(function(){
     contentDiv.removeClass("edit-text");
     contentDiv.prop("contenteditable","false");
     contentDiv.html(content);
+    ajaxContent(content);
     $(".edit-btn").prop("disabled", false);
     $(".save-btn").css("visibility", "hidden");
 });
+
+
 
 

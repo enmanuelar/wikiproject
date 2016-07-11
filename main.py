@@ -42,17 +42,7 @@ class SignupHandler(Handler):
     def get(self):
         self.render("signup.html")
 
-class EditHandler(Handler):
-    def get(self, *args):
-        title = args[0][1:]
-        self.render("_edit.html", title = title)
 
-    def post(self, *args):
-        title = self.request.get("title")
-        content = self.request.get("content")
-        entry = wikidb.Entry(title = title, content = content)
-        entry.put()
-        self.redirect("/" + title)
 
 class LoginHandler(Handler):
     def get(self):
@@ -64,17 +54,23 @@ class LoginHandler(Handler):
 class WikiPageHandler(Handler):
     def get(self, *args):
         entity = db.Query(wikidb.Entry).filter('title =', args[0][1:]).get()
-        try:
-            if entity.title:
-                self.render("/page.html",title = entity.title, content = entity.content)
-        except AttributeError:
+        if entity:
+            self.render("/page.html",title = entity.title, content = entity.content)
+        else:
             self.redirect("/_edit" + args[0])
+
+    def post(self, *args):
+        content = self.request.get("content")
+        entity = db.Query(wikidb.Entry).filter('title =', args[0][1:]).get()
+        entity.content = content
+        entity.put()
+
 
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)?'
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/signup', SignupHandler),
-    ('/_edit' + PAGE_RE, EditHandler),
+    #('/_edit' + PAGE_RE, EditHandler),
     ('/login', LoginHandler),
     (PAGE_RE, WikiPageHandler)
 ], debug=True)
