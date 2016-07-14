@@ -48,62 +48,72 @@ function validationClass(inputDiv, status){
         $(inputDiv).removeClass("has-success has-error").addClass("has-success").children("span.glyphicon").removeClass("glyphicon-ok glyphicon-remove").addClass("glyphicon-ok");
     }else if (status == "error"){
         $(inputDiv).removeClass("has-success has-error").addClass("has-error").children("span.glyphicon").removeClass("glyphicon-ok glyphicon-remove").addClass("glyphicon-remove");
-        $("#input-password").val("");
-        $("#input-verify").val("");
+       //$("#input-password").val("");
+        //$("#input-verify").val("");
     }
 }
 
-function validate(input){
-    //username
-    if (/^[a-zA-Z0-9_-]{3,20}$/.test(input.username)){
-        validationClass("#input-name-div", "success");
+//username
+$("#input-name").blur(function () {
+    var username = $("#input-name").val();
+    if (username && /^[a-zA-Z0-9_-]{3,20}$/.test(username)) {
+        $.post("/signup", {username: username}).done(function(data){
+            var status = JSON.parse(data).status;
+            if (status == false){
+                validationClass("#input-name-div", "success");
+            }
+            else{
+                validationClass("#input-name-div", "error");
+            }
+        });
     }
-    else{
+    else {
         validationClass("#input-name-div", "error");
     }
-    //password
-    if (/^.{3,20}$/.test(input.password) && (input.password == input.verify)){
-        validationClass("#input-password-div", "success");
-    }
-    else{
-        validationClass("#input-password-div", "error");
-    }
-    //verify
-     if (/^.{3,20}$/.test(input.verify) && (input.password == input.verify)){
-        validationClass("#input-verify-div", "success");
-    }
-    else{
-        validationClass("#input-verify-div", "error");
-    }
-    //email
-    if (/^[\S]+@[\S]+.[\S]+$/.test(input.email)){
-        validationClass("#input-email-div", "success");
-    }
-    else{
-        validationClass("#input-email-div", "error");
-    }
-}
-
-$("#register-btn").click(function(){
-    var username = $("#input-name").val();
+});
+//password
+$("#input-password").change(function () {
     var password = $("#input-password").val();
     var verify = $("#input-verify").val();
-    var email = $("#input-email").val();
-    var input = {
-        username: username,
-        password: password,
-        verify: verify,
-        email: email
-    };
-    validate(input);
-    //var userRe = /r^[a-zA-Z0-9_-]{3,20}$/;
-    /*if (/^[a-zA-Z0-9_-]{3,20}$/.test(username)){
-        $("#input-name-valid").addClass()
-    }
-    else{
-        alert("invalid");
-    }*/
 
+    if (password && /^.{3,20}$/.test(password)) {
+        validationClass("#input-password-div", "success");
+        if (verify && verify == password){
+            validationClass("#input-verify-div", "success");
+        }
+    }
+    else {
+        validationClass("#input-password-div", "error");
+    }
 });
+//verify
+$("#input-verify").change(function () {
+    var verify = $("#input-verify").val();
+    var password = $("#input-password").val();
+    if (verify && /^.{3,20}$/.test(verify) && (password == verify)) {
+        validationClass("#input-verify-div", "success");
+    }
+    else {
+        validationClass("#input-verify-div", "error");
+    }
+});
+//email
+$("#input-email").blur(function () {
+    var email = $("#input-email").val();
+    if ((email && /^[\S]+@[\S]+.[\S]+$/.test(email)) || !email) {
+        validationClass("#input-email-div", "success");
+    }
+    else {
+        validationClass("#input-email-div", "error");
+    }
+});
+
+$("#register-btn").click(function(){
+   if ($("div.has-feedback").children("span.glyphicon-ok").length == 4){
+       console.log("ee");
+       $.post('/signup',{validation: true});
+   }
+});
+
 
 

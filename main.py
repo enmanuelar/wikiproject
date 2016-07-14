@@ -38,9 +38,9 @@ class MainPage(Handler):
         entries = db.GqlQuery("SELECT * FROM Entry ORDER BY created DESC LIMIT 10")
         self.render("index.html", entries = entries)
 
-class SignupHandler(Handler):
-    def get(self):
-        self.render("signup.html")
+#class SignupHandler(Handler):
+#    def get(self):
+#       self.render("signup.html")
 
 
 
@@ -69,7 +69,7 @@ class WikiPageHandler(Handler):
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)?'
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/signup', SignupHandler),
+    #'/signup', SignupHandler),
     ('/login', LoginHandler),
     (PAGE_RE, WikiPageHandler)
 ], debug=True)

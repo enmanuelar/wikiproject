@@ -32,6 +32,9 @@ handlers:
 - url: /_edit\/?(.*)?
   script: edit.app
 
+- url: /signup
+  script: signup.app
+
 - url: .*
   script: main.app
 

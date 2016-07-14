@@ -71,3 +71,8 @@
 .list-container{
     background-color: #fff8dc;
 }
+
+.signup-error{
+    top: 90px;
+    color: #b92c28;
+}
