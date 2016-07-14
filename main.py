@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import webapp2, os, jinja2, wikidb, logging
+import webapp2, os, jinja2, wikidb, logging, utils
 from google.appengine.ext import db
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -35,8 +35,18 @@ class Handler(webapp2.RequestHandler):
 
 class MainPage(Handler):
     def get(self):
+        user_cookie = self.request.cookies.get('name')
+        html = '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Login<span class="caret"></span></button>'
+        if user_cookie:
+            user_id = int(self.request.cookies.get('user_id'))
+            entity = wikidb.Users.get_by_id(user_id)
+            valid_hash = utils.check_secure_val(user_cookie, entity.username)
+            if valid_hash:
+                html = '<button class="btn btn-default" type="button" disabled> %s | <a href="/logout">logout</a></button>' % entity.username
+
         entries = db.GqlQuery("SELECT * FROM Entry ORDER BY created DESC LIMIT 10")
-        self.render("index.html", entries = entries)
+        self.render("index.html", entries=entries, html=html)
+
 
 #class SignupHandler(Handler):
 #    def get(self):
@@ -44,18 +54,11 @@ class MainPage(Handler):
 
 
 
-class LoginHandler(Handler):
-    def get(self):
-        self.render("login.html")
-
-    def post(self):
-        self.redirect("/")
-
 class WikiPageHandler(Handler):
     def get(self, *args):
         entity = db.Query(wikidb.Entry).filter('title =', args[0][1:]).get()
         if entity:
-            self.render("/page.html",title = entity.title, content = entity.content)
+            self.render("/page.html",title=entity.title, content=entity.content)
         else:
             self.redirect("/_edit" + args[0])
 
@@ -65,11 +68,38 @@ class WikiPageHandler(Handler):
         entity.content = content
         entity.put()
 
+class LoginHandler(Handler):
+    def get(self):
+        self.redirect("/")
+
+    def post(self):
+        username = self.request.get("username")
+        password = self.request.get("password")
+        entity = db.Query(wikidb.Users).filter('username =', username).get()
+        #login_obj = Login(username, password)
+        if utils.validpw(password, entity.salt, entity.password):
+            hash_cookie = "%s|%s" % (entity.password, entity.salt)
+            id_cookie = str(entity.key().id())
+            self.response.headers.add_header('Set-Cookie', 'name=%s; Path=/' % (str(hash_cookie)))
+            self.response.headers.add_header('Set-Cookie', 'user_id=%s; Path=/' % id_cookie)
+            self.redirect("/")
+       #else:
+        #    self.render("login.html", username=username, login_error="invalid login")
+
+class LogoutHandler(Handler):
+    def get(self):
+        #name_cookie = self.request.cookies.get('name')
+        #user_id_cookie = self.request.cookies.get('user_id')
+        self.response.delete_cookie('name')
+        self.response.delete_cookie('user_id')
+        self.redirect("/")
 
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)?'
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     #'/signup', SignupHandler),
     ('/login', LoginHandler),
+    ('/logout', LogoutHandler),
     (PAGE_RE, WikiPageHandler)
+
 ], debug=True)

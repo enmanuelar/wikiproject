@@ -56,8 +56,9 @@ function validationClass(inputDiv, status){
 //username
 $("#input-name").blur(function () {
     var username = $("#input-name").val();
+    var validation = $("input#validation-input").val();
     if (username && /^[a-zA-Z0-9_-]{3,20}$/.test(username)) {
-        $.post("/signup", {username: username}).done(function(data){
+        $.post("/signup", {username: username, validation: validation}).done(function(data){
             var status = JSON.parse(data).status;
             if (status == false){
                 validationClass("#input-name-div", "success");
@@ -98,20 +99,27 @@ $("#input-verify").change(function () {
     }
 });
 //email
-$("#input-email").blur(function () {
-    var email = $("#input-email").val();
-    if ((email && /^[\S]+@[\S]+.[\S]+$/.test(email)) || !email) {
-        validationClass("#input-email-div", "success");
-    }
-    else {
-        validationClass("#input-email-div", "error");
-    }
-});
-
+var email = $("#input-email")
+if (email.val()){
+    $("#input-email").blur(function () {
+        var email = $("#input-email").val();
+        if ((email && /^[\S]+@[\S]+.[\S]+$/.test(email)) || !email) {
+            validationClass("#input-email-div", "success");
+        }
+        else {
+            validationClass("#input-email-div", "error");
+        }
+    });
+}
 $("#register-btn").click(function(){
-   if ($("div.has-feedback").children("span.glyphicon-ok").length == 4){
-       console.log("ee");
-       $.post('/signup',{validation: true});
+   if ($("div.has-feedback").children("span.glyphicon-ok").length >= 3){
+       $("input#validation-input").val("false");
+   }else{
+        $("#input-password").val("");
+        $("#input-password-div").removeClass("has-success has-error").children("span.glyphicon").removeClass("glyphicon-ok glyphicon-remove")
+        $("#input-verify").val("");
+        $("#input-verify-div").removeClass("has-success has-error").children("span.glyphicon").removeClass("glyphicon-ok glyphicon-remove")
+
    }
 });
 

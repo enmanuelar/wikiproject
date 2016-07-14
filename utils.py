@@ -1,5 +1,6 @@
-import hashlib, random, string
-
+import hashlib, random, string, wikidb
+from google.appengine.api import memcache
+from google.appengine.ext import db
 
 ## HASHING FUNCTIONS
 def make_salt():
@@ -33,3 +34,11 @@ def check_secure_val(value, username):
         return True
     else:
         return None
+
+##CACHE
+def get_userdb_cache(username):
+    entity = memcache.get(username)
+    return entity
+
+def add_userdb_cache(username, entity_key):
+    memcache.set(username, entity_key)

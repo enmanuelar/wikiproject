@@ -10,5 +10,5 @@ class Users(db.Model):
     username = db.StringProperty(required = True)
     password = db.StringProperty(required = True)
     salt = db.StringProperty(required = False)
-    email = db.EmailProperty()
+    email = db.EmailProperty(required = False)
 
