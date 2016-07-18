@@ -123,5 +123,7 @@ $("#register-btn").click(function(){
    }
 });
 
-
+if (!document.cookie && paths.indexOf(window.location.pathname)== -1) {
+    $(".edit-btn").prop("disabled", true);
+}
 

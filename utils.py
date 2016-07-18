@@ -36,9 +36,18 @@ def check_secure_val(value, username):
         return None
 
 ##CACHE
-def get_userdb_cache(username):
-    entity = memcache.get(username)
+def get_userdb_cache(key):
+    entity = memcache.get(key)
     return entity
 
-def add_userdb_cache(username, entity_key):
-    memcache.set(username, entity_key)
+def add_userdb_cache(key, entity_key):
+    memcache.set(key, entity_key)
+
+def entrydb_cache(key):
+    #key = "top"
+    entries = memcache.get(key)
+    if entries == None or update:
+        #logging.error("DB QUERY")
+        entries = db.GqlQuery("SELECT * FROM Entry ORDER BY created DESC LIMIT 10")
+        memcache.set(key, entries)
+    return entries

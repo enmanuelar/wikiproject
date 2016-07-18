@@ -1,6 +1,12 @@
 .jumbotron{
-    text-align: right;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0px 8px 4px #cccccc;
     }
+
+body{
+    background-color: #eeeeee;
+}
 
 #login-form{
     width: 191px;
@@ -69,7 +75,8 @@
 }
 
 .list-container{
-    background-color: #fff8dc;
+    padding: 0px;
+    box-shadow: 0px 8px 4px #cccccc;
 }
 
 .signup-error{

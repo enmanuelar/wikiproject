@@ -29,7 +29,7 @@ handlers:
   static_files: static/\1
   upload: static/.*
 
-- url: /_edit/(.*)
+- url: /_edit\/?(.*)?
   script: edit.app
 
 - url: /signup

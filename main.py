@@ -42,15 +42,10 @@ class MainPage(Handler):
             entity = wikidb.Users.get_by_id(user_id)
             valid_hash = utils.check_secure_val(user_cookie, entity.username)
             if valid_hash:
-                html = '<button class="btn btn-default" type="button" disabled> %s | <a href="/logout">logout</a></button>' % entity.username
+                html = '<button class="btn btn-default" type="button" disabled> %s | </button><a href="/logout">logout</a>' % entity.username
 
         entries = db.GqlQuery("SELECT * FROM Entry ORDER BY created DESC LIMIT 10")
         self.render("index.html", entries=entries, html=html)
-
-
-#class SignupHandler(Handler):
-#    def get(self):
-#       self.render("signup.html")
 
 
 
@@ -60,7 +55,10 @@ class WikiPageHandler(Handler):
         if entity:
             self.render("/page.html",title=entity.title, content=entity.content)
         else:
-            self.redirect("/_edit" + args[0])
+            if self.request.cookies.get('name'):
+                self.redirect("/_edit" + args[0])
+            else:
+                self.redirect("/")
 
     def post(self, *args):
         content = self.request.get("content")
@@ -76,15 +74,17 @@ class LoginHandler(Handler):
         username = self.request.get("username")
         password = self.request.get("password")
         entity = db.Query(wikidb.Users).filter('username =', username).get()
-        #login_obj = Login(username, password)
-        if utils.validpw(password, entity.salt, entity.password):
-            hash_cookie = "%s|%s" % (entity.password, entity.salt)
-            id_cookie = str(entity.key().id())
-            self.response.headers.add_header('Set-Cookie', 'name=%s; Path=/' % (str(hash_cookie)))
-            self.response.headers.add_header('Set-Cookie', 'user_id=%s; Path=/' % id_cookie)
+        if entity:
+            if utils.validpw(password, entity.salt, entity.password):
+                hash_cookie = "%s|%s" % (entity.password, entity.salt)
+                id_cookie = str(entity.key().id())
+                self.response.headers.add_header('Set-Cookie', 'name=%s; Path=/' % (str(hash_cookie)))
+                self.response.headers.add_header('Set-Cookie', 'user_id=%s; Path=/' % id_cookie)
+                self.redirect("/")
+            else:
+                self.redirect("/")
+        else:
             self.redirect("/")
-       #else:
-        #    self.render("login.html", username=username, login_error="invalid login")
 
 class LogoutHandler(Handler):
     def get(self):
