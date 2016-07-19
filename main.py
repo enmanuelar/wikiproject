@@ -36,14 +36,13 @@ class Handler(webapp2.RequestHandler):
 class MainPage(Handler):
     def get(self):
         user_cookie = self.request.cookies.get('name')
-        html = '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Login<span class="caret"></span></button>'
+        html = '<a href="/signup">signup</a> | <a href="/login">login</a>'
         if user_cookie:
             user_id = int(self.request.cookies.get('user_id'))
             entity = wikidb.Users.get_by_id(user_id)
             valid_hash = utils.check_secure_val(user_cookie, entity.username)
             if valid_hash:
-                html = '<button class="btn btn-default" type="button" disabled> %s | </button><a href="/logout">logout</a>' % entity.username
-
+                html = '%s | <a href="/logout">logout</a>' % entity.username
         entries = db.GqlQuery("SELECT * FROM Entry ORDER BY created DESC LIMIT 10")
         self.render("index.html", entries=entries, html=html)
 
@@ -58,7 +57,7 @@ class WikiPageHandler(Handler):
             if self.request.cookies.get('name'):
                 self.redirect("/_edit" + args[0])
             else:
-                self.redirect("/")
+                self.redirect("/login")
 
     def post(self, *args):
         content = self.request.get("content")
@@ -68,7 +67,7 @@ class WikiPageHandler(Handler):
 
 class LoginHandler(Handler):
     def get(self):
-        self.redirect("/")
+        self.render("login.html")
 
     def post(self):
         username = self.request.get("username")
@@ -81,15 +80,10 @@ class LoginHandler(Handler):
                 self.response.headers.add_header('Set-Cookie', 'name=%s; Path=/' % (str(hash_cookie)))
                 self.response.headers.add_header('Set-Cookie', 'user_id=%s; Path=/' % id_cookie)
                 self.redirect("/")
-            else:
-                self.redirect("/")
-        else:
-            self.redirect("/")
+        self.render("login.html", error="invalid login")
 
 class LogoutHandler(Handler):
     def get(self):
-        #name_cookie = self.request.cookies.get('name')
-        #user_id_cookie = self.request.cookies.get('user_id')
         self.response.delete_cookie('name')
         self.response.delete_cookie('user_id')
         self.redirect("/")
@@ -97,7 +91,6 @@ class LogoutHandler(Handler):
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)?'
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    #'/signup', SignupHandler),
     ('/login', LoginHandler),
     ('/logout', LogoutHandler),
     (PAGE_RE, WikiPageHandler)

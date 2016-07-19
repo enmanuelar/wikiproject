@@ -67,7 +67,6 @@ body{
 .save-btn{
     text-align: left;
     margin-top: 10px;
-    visibility: hidden;
 }
 
 .title-input{
@@ -81,5 +80,9 @@ body{
 
 .signup-error{
     top: 90px;
+    color: #b92c28;
+}
+
+.error{
     color: #b92c28;
 }

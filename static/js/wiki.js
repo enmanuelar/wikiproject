@@ -6,7 +6,7 @@ $(".signup-btn").click(function(){
 });
 
 var paths = ["/signup", "/"];
-if (paths.indexOf(window.location.pathname)!= -1 || window.location.pathname.substring(0, 6) === "/_edit"){
+if (paths.indexOf(window.location.pathname)!= -1 ){
     $(".edit-btn").prop("disabled", true);
 }
 
@@ -16,10 +16,12 @@ $(".edit-btn").click(function(){
     var contentDiv = $("#index-content");
     contentDiv.addClass("edit-text");
     contentDiv.text(content);
-    contentDiv.prop("contenteditable","true");
+    contentDiv.prop("contenteditable", "true");
     $(".edit-btn").prop("disabled", true);
     $(".save-btn").css("visibility", "visible");
+
 });
+
 
 function ajaxContent(content){
     $.ajax(window.location.pathname,{
@@ -31,16 +33,8 @@ function ajaxContent(content){
     });
 }
 
-$(".save-btn").click(function(){
-    var content = $("#index-content").text();
-    var contentDiv = $("#index-content");
-    contentDiv.removeClass("edit-text");
-    contentDiv.prop("contenteditable","false");
-    contentDiv.html(content);
-    ajaxContent(content);
-    $(".edit-btn").prop("disabled", false);
-    $(".save-btn").css("visibility", "hidden");
-});
+
+$(".save-btn").click(function(){})
 
 //Signup Validation
 function validationClass(inputDiv, status){
@@ -48,8 +42,6 @@ function validationClass(inputDiv, status){
         $(inputDiv).removeClass("has-success has-error").addClass("has-success").children("span.glyphicon").removeClass("glyphicon-ok glyphicon-remove").addClass("glyphicon-ok");
     }else if (status == "error"){
         $(inputDiv).removeClass("has-success has-error").addClass("has-error").children("span.glyphicon").removeClass("glyphicon-ok glyphicon-remove").addClass("glyphicon-remove");
-       //$("#input-password").val("");
-        //$("#input-verify").val("");
     }
 }
 

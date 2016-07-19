@@ -43,11 +43,3 @@ def get_userdb_cache(key):
 def add_userdb_cache(key, entity_key):
     memcache.set(key, entity_key)
 
-def entrydb_cache(key):
-    #key = "top"
-    entries = memcache.get(key)
-    if entries == None or update:
-        #logging.error("DB QUERY")
-        entries = db.GqlQuery("SELECT * FROM Entry ORDER BY created DESC LIMIT 10")
-        memcache.set(key, entries)
-    return entries

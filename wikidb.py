@@ -2,8 +2,8 @@ import webapp2
 from google.appengine.ext import db
 
 class Entry(db.Model):
-    title = db.StringProperty(required = True)
-    content = db.TextProperty(required = True)
+    title = db.StringProperty(required = False)
+    content = db.TextProperty(required = False)
     created = db.DateTimeProperty(auto_now_add = True)
 
 class Users(db.Model):

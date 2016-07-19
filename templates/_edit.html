@@ -1,18 +1,26 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Edit page
+    Edit page {{ title }}
 {% endblock %}
 
 
 {% block content %}
-<form action="/_edit/" role="form" method="post">
-    <div class="form-group">
-        <label for="edit-text">Create html document for <em>{{ title }}</em></label>
-        <input type="text" class="form-control title-input" name="title" value={{ title }} readonly>
-        <textarea name="content" class="form-control edit-text" id="edit-text" placeholder="Write your html here" required></textarea>
-        <!--<div contenteditable class="edit-text" id="edit-text"></div>-->
-    </div>
-    <input type="submit" class="btn btn-default" value="save">
-</form>
+{% if new_page %}
+    <form action="/_edit/{{ title }}" role="form" method="post">
+        <div class="form-group">
+            <label for="edit-text">Create html document for <em>{{ title }}</em></label>
+            <textarea name="content" class="form-control edit-text" id="edit-text" placeholder="Write your html here"></textarea>
+        </div>
+        <input type="submit" class="btn btn-default" value="save">
+    </form>
+{% else %}
+    <form action="/_edit/{{ title }}" role="form" method="post">
+        <div class="form-group">
+            <label for="edit-text">Edit html document for <em>{{ title }}</em></label>
+            <textarea name="content" class="form-control edit-text" id="index-content">{{ content }}</textarea>
+        </div>
+        <input type="submit" class="btn btn-default" value="save">
+    </form>
+{% endif %}
 {% endblock %}
